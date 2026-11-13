@@ -1,0 +1,44 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: spring-security-keycloak
+
+  datasource:
+    url: jdbc:h2:mem:keycloak_demo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: spring-app
+            client-secret: secret
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/company
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/company
+
+logging:
+  level:
+    org.springframework.security: INFO
